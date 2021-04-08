@@ -35,7 +35,7 @@
     <main class="container" id="border">
 
         <h1>Registreer</h1>
-        <p class="lead">Meld je aan bij Anoroc Services, wij beschermen jouw software tegen malware!</p>
+        <p class="lead">Meld je aan bij Anorac Services, wij beschermen jouw software tegen malware!</p>
 
         <div class="row">
             <div class="col-md-8">
@@ -93,14 +93,14 @@
                         <!-- Herhaal Wachtwoord -->
                         <div class="col-md-4 mt-4">
                             <label for="inputHerhaalWachtwoord" class="form-label">Herhaal Wachtwoord</label>
-                            <input type="text" class="form-control" id="inputHerhaalWachtwoord">
+                            <input type="password" class="form-control" id="inputHerhaalWachtwoord">
                         </div>
 
                     </div>
 
                     <div class="row">
 
-                        <!-- Herhaal Wachtwoord -->
+                        <!-- Adres -->
                         <div class="col-md-8 mt-4">
                             <label for="inputAdres" class="form-label">Adres</label>
                             <input type="text" placeholder="Uw adres en huisnummer" class="form-control"
@@ -195,28 +195,28 @@
 
                             <!-- Banking App -->
                             <div class="form-check">
-                                <input type="radio" value="Banking App" class="form-check-input" name="betalingRadios"
-                                    id="bankappRadiobtn">
+                                <input type="radio" value="Banking App" class="form-check-input"
+                                    name="betalingRadiobtns" id="bankappRadiobtn">
                                 <label class="form-check-label" for="bankcppRadio">Banking App</label>
                             </div>
 
                             <!-- Overschrijving -->
                             <div class="form-check">
                                 <input type="radio" value="Overschrijving" class="form-check-input"
-                                    name="betalingRadios" id="overschrijvingRadiobtn">
+                                    name="betalingRadiobtns" id="overschrijvingRadiobtn">
                                 <label class="form-check-label" for="bankcppRadio">Overschrijving</label>
                             </div>
 
                             <!-- Visa Card -->
                             <div class="form-check">
-                                <input type="radio" value="Visa Card" class="form-check-input" name="betalingRadios"
+                                <input type="radio" value="Visa Card" class="form-check-input" name="betalingRadiobtns"
                                     id="visacardRadiobtn">
                                 <label class="form-check-label" for="bankcppRadio">Visa Card</label>
                             </div>
 
                             <!-- PayPal -->
                             <div class="form-check">
-                                <input type="radio" value="PayPal" class="form-check-input" name="betalingRadios"
+                                <input type="radio" value="PayPal" class="form-check-input" name="betalingRadiobtns"
                                     id="paypalRadiobtn">
                                 <label class="form-check-label" for="bankcppRadio">PayPal</label>
                             </div>
@@ -278,6 +278,143 @@
         $("#dangerAlert").hide();
         $("#successAlert").hide();
         $("#infoAlert").hide();
+
+        // Functie om validaties uit te voeren
+        function validateForm() {
+            // Array van errors aanmaken
+            let errors = [];
+
+            // Erros leegmaken
+            document.getElementById("errors").innerHTML = "";
+
+            let voornaam = document.getElementById("inputVoornaam").value;
+            let naam = document.getElementById("inputNaam").value;
+            let gebruikersnaam = document.getElementById("inputGebruikersnaam").value;
+            let email = document.getElementById("inputEmail").value;
+            let wachtwoord = document.getElementById("inputWachtwoord").value;
+            let herhaalwachtwoord = document.getElementById("inputHerhaalWachtwoord").value;
+            let adres = document.getElementById("inputAdres").value;
+            let land = document.getElementById("inputLand");
+            let provincie = document.getElementById("inputProvincie");
+            let postcode = parseInt(document.getElementById("inputPostcode"));
+            let nieuwsbrief = document.getElementById("nieuwsbriefCheck");
+            let algemenevoorwaarden = document.getElementById("voorwaardenCheck");
+            let betaling = document.getElementById("betalingRadiobtns");
+
+            // Functie om op lege velden te controleren
+            function checkEmptyField(veld, melding) {
+                if (veld == null || veld == "") {
+                    return errors.push(melding)
+                } else {
+                    return true
+                }
+            }
+
+            // Functie checkEmptyField oproepen om op lege velden te controleren
+            checkEmptyField(voornaam, "Het veld voornaam is vereist.");
+            checkEmptyField(naam, "Het veld naam is vereist.");
+            checkEmptyField(gebruikersnaam, "Het veld gebruikersnaam is vereist.");
+            checkEmptyField(wachtwoord, "Het veld wachtwoord is vereist.");
+            checkEmptyField(herhaalwachtwoord, "Het veld herhaal wachtwoord is vereist");
+            checkEmptyField(adres, "Het veld adres is vereist.");
+            checkEmptyField(land, "Het veld land is vereist.");
+            checkEmptyField(provincie, "Het veld provincie is vereist.");
+            checkEmptyField(postcode, "Het veld postcode is vereist"); // problemen
+
+            // Functie aanmaken om email te valideren
+            // https://www.w3resource.com/javascript/form/email-validation.php
+            // https://stackoverflow.com/questions/46155/how-to-validate-an-email-address-in-javascript
+            // https://ui.dev/validate-email-address-javascript/
+            function validateEmail(emailadres) {
+                emailadres = email; // overbodig?
+                if (/^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/.test(emailadres)) {
+                    return true
+                } else {
+                    return errors.push("E-mailadres is niet correct.")
+                }
+            }
+
+            // Valideren van email
+            validateEmail(email);
+
+            // Functie aanmaken om wachtwoorden te valideren
+            // https://www.geeksforgeeks.org/password-matching-using-javascript/
+            function validatePassword(password1, password2) {
+                if (password1.length >= 8 && password2.length >= 8) {
+                    if (pasword1 != password2) {
+                        return errors.push("Je wachtwoorden komen niet overeen.");
+                    } else {
+                        return true;
+                    }
+                } else {
+                    return errors.push("Je wachtwoord moet langer dan 7 karakters zijn.");
+                }
+            }
+
+            // Valideren van het aantal karakters en gelijkheid van wachtwoorden
+            validatePassword(wachtwoord, herhaalwachtwoord);
+
+            // Functie aanmaken voor postcode validaties
+            function checkPC(veld) {
+                if (!veld) {
+                    errors.push("Het veld postcode is vereist."); // problemen
+                } else {
+                    if (veld > 9999 || veld < 1000) {
+                        errors.push("De waarde van postcode moet tussen de 1000 en 9999 liggen.");
+                    }
+                }
+            }
+
+            // Oproepen van de functie checkPC om nodige validaties uit te voeren
+            checkPC(postcode);
+
+            // Functie aanmaken om na te gaan of de algemene voorwaarden zijn geselecteerd
+            // https://www.w3schools.com/jsref/prop_checkbox_checked.asp
+            function checkAlgemeneVoorwaarden() {
+                if (algemenevoorwaarden.checked == true) {
+                    return true
+                } else {
+                    return errors.push("Je moet akkoord gaan met de algemene voorwaarden.");
+                }
+            }
+
+            // https://www.w3schools.com/jsref/prop_radio_checked.asp
+            function validatePayment(veld) {
+                for (let i = 0; i < veld.length; i++) {
+                    if (veld[i].checked == true) {
+                        return document.getElementById("infoAlert").innerHTML = "Je betalingswijze is " + veld[i].value;
+                    }
+                }
+            }
+
+            // Functie oproepen om na te gaan of de algemene voorwaarden zijn geaccepteerd
+            checkAlgemeneVoorwaarden();
+
+            // Alerts tonen
+            if (errors.length > 0) {
+                for (let i = 0; i < errors.length; i++) {
+                    document.getElementById("errors").innerHTML += errors[i] + "<br/>";
+                }
+                $("#dangerAlert").show();
+            } else {
+                $("#successAlert").show();
+                $("#infoAlert").show();
+            }
+
+            function writeError() {
+                if (errors.length > 0) {
+                    for (let i = 0; i < errors.length; i++) {
+                        document.getElementById("errors").innerHTML += errors[i] + "<br/>";
+                    }
+                }
+            }
+        }
+        /*
+        To-do:
+        Gebruiksnaam nakijken
+        Domein nakijken
+        Geef array errors weer
+        */
     </script>
 </body>
 
